@@ -1,12 +1,14 @@
 package me.realized.duels.util;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.TreeMap;
-import java.util.regex.Pattern;
 import me.realized.duels.util.reflect.ReflectionUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class StringUtil {
 
@@ -31,7 +33,8 @@ public final class StringUtil {
         COMMONS_LANG3 = ReflectionUtil.getClassUnsafe(" org.apache.commons.lang3.StringUtils") != null;
     }
 
-    private StringUtil() {}
+    private StringUtil() {
+    }
 
     // Source: https://stackoverflow.com/questions/12967896/converting-integers-to-roman-numerals-java
     public static String toRoman(final int number) {
@@ -65,23 +68,23 @@ public final class StringUtil {
     }
 
     public static String color(final String input) {
-        return translateHexColors(input)
+        return translateHexColors(input);
     }
 
-    private static Pattern hexPattern = Pattern.compile("#[a-fA-F0-9]{6}")!!
+    private static Pattern hexPattern = Pattern.compile("#[a-fA-F0-9]{6}");
 
     public static String translateHexColors(String input) {
-        var message = ChatColor.translateAlternateColorCodes('&', this)
-        var matcher = pattern.matcher(message)
+        String message = ChatColor.translateAlternateColorCodes('&', input);
+        Matcher matcher = hexPattern.matcher(message);
 
         while (matcher.find()) {
-            val hexCode = message.substring(matcher.start(), matcher.end())
+            String hexCode = message.substring(matcher.start(), matcher.end());
 
-            message = message.replace(hexCode, ChatColor.of(hexCode).toString())
-            matcher = pattern.matcher(message)
+            message = message.replace(hexCode, net.md_5.bungee.api.ChatColor.of(hexCode).toString());
+            matcher = hexPattern.matcher(message);
         }
 
-        return message
+        return message;
     }
 
     public static List<String> color(final List<String> input) {
@@ -95,34 +98,18 @@ public final class StringUtil {
 
     // In some versions of spigot, commons-lang3 is not available
     public static String join(final Object[] array, final String separator, final int startIndex, final int endIndex) {
-        if (COMMONS_LANG3) {
-            return org.apache.commons.lang3.StringUtils.join(array, separator, startIndex, endIndex);
-        } else {
-            return org.apache.commons.lang.StringUtils.join(array, separator, startIndex, endIndex);
-        }
+        return org.apache.commons.lang3.StringUtils.join(array, separator, startIndex, endIndex);
     }
 
     public static String join(final Collection<?> collection, final String separator) {
-        if (COMMONS_LANG3) {
-            return org.apache.commons.lang3.StringUtils.join(collection, separator);
-        } else {
-            return org.apache.commons.lang.StringUtils.join(collection, separator);
-        }
+        return org.apache.commons.lang3.StringUtils.join(collection, separator);
     }
 
     public static String capitalize(final String s) {
-        if (COMMONS_LANG3) {
-            return org.apache.commons.lang3.StringUtils.capitalize(s);
-        } else {
-            return org.apache.commons.lang.StringUtils.capitalize(s);
-        }
+        return org.apache.commons.lang3.StringUtils.capitalize(s);
     }
 
     public static boolean containsIgnoreCase(final String str, final String searchStr) {
-        if (COMMONS_LANG3) {
-            return org.apache.commons.lang3.StringUtils.containsIgnoreCase(str, searchStr);
-        } else {
-            return org.apache.commons.lang.StringUtils.containsIgnoreCase(str, searchStr);
-        }
+        return org.apache.commons.lang3.StringUtils.containsIgnoreCase(str, searchStr);
     }
 }
