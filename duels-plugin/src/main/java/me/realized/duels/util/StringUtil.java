@@ -65,7 +65,23 @@ public final class StringUtil {
     }
 
     public static String color(final String input) {
-        return ChatColor.translateAlternateColorCodes('&', input);
+        return translateHexColors(input)
+    }
+
+    private static Pattern hexPattern = Pattern.compile("#[a-fA-F0-9]{6}")!!
+
+    public static String translateHexColors(String input) {
+        var message = ChatColor.translateAlternateColorCodes('&', this)
+        var matcher = pattern.matcher(message)
+
+        while (matcher.find()) {
+            val hexCode = message.substring(matcher.start(), matcher.end())
+
+            message = message.replace(hexCode, ChatColor.of(hexCode).toString())
+            matcher = pattern.matcher(message)
+        }
+
+        return message
     }
 
     public static List<String> color(final List<String> input) {
